@@ -1,0 +1,39 @@
+{% extends "layout.html "%}
+
+{% block head %}
+ {{ ckeditor.load_code_theme() }}
+{% endblock head %}
+
+{% block content %}
+
+<div class="card col-lg-12">
+<div class="card-body">
+<form method="POST" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    <h5><strong>{{form.title.label()}}</strong></h5>
+    {{form.title(class="form-control form-control-lg", placeholder="Enter post title")}}
+  </div>
+  <div class="form-group">
+    <h5><strong>{{form.content.label()}}</strong></h5>
+    {{form.content(class="form-control", placeholder="Post Content", rows="7")}}
+  </div>
+  <div class="from-group padding">
+    <h5><strong>{{form.tags.label()}}</strong></h5>
+    {{form.tags(class="form-control", placeholder="Tags", rows="7")}}
+    <small>You can enter multiple tags and seperate eah tag using #.</small>
+  </div>
+  <div class="form-group">
+    <h5><strong>{{form.post_photo.label}}</strong></h5>
+    {{form.post_photo(class="form-control-file")}}
+    <small>*Post picture is optional</small>
+  </div>
+  {{form.submit(class="btn btn-outline-info")}}
+</form>
+</div>
+</div>
+
+{{ ckeditor.load() }}
+{{ ckeditor.config(name='content') }}
+
+{% endblock %}

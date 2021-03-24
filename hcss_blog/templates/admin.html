@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-pendpost-tab" data-toggle="tab" href="#nav-pendpost" role="tab" aria-controls="nav-pendpost" aria-selected="true">Pending Posts</a>
+    <a class="nav-item nav-link" id="nav-penduser-tab" data-toggle="tab" href="#nav-penduser" role="tab" aria-controls="nav-penduser" aria-selected="false">Pending Users</a>
+    <a class="nav-item nav-link" id="nav-post-tab" data-toggle="tab" href="#nav-post" role="tab" aria-controls="nav-post" aria-selected="false">All Posts</a>
+    <a class="nav-item nav-link" id="nav-users-tab" data-toggle="tab" href="#nav-users" role="tab" aria-controls="nav-users" aria-selected="false">All Users</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-pendpost" role="tabpanel" aria-labelledby="nav-pendpost-tab">
+    <table class="table table-hover">
+      <thead>
+        <tr class="bg-light">
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">Email</th>
+          <th scope="col">Date Posted</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if posts %}
+        {% for post in posts %}
+        <tr>
+          <th scope="row">{{post.title}}</th>
+          <td>{{post.author.username}}</td>
+          <td>{{post.author.email}}</td>
+          <td>{{post.date_posted.strftime('%m-%d-%Y')}}</td>
+          <td><a href="{{url_for('posts.post', post_id=post.id)}}" class=""><button class="btn btn-outline-info">View Post</button></a></td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <th scope="row">There are no pending posts!</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane fade" id="nav-penduser" role="tabpanel" aria-labelledby="nav-penduser-tab">
+    <table class="table table-hover">
+      <thead>
+        <tr class="bg-light">
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if users %}
+        {% for user in users %}
+        <tr>
+          <th scope="row">{{user.username}}</th>
+          <td>{{user.email}}</td>
+          <td>{{user.role}}</td>
+          <td>{{user.status}}</td>
+          <td><a href="{{url_for('admin.authorize_user', user_id=user.id)}}" class=""><button class="btn btn-outline-info">Edit User</button></a></td>
+        </tr>
+        {% endfor %}
+      {% else %}
+      <tr>
+        <th scope="row"></th>
+        <td></td>
+        <td>There are no pending users!</td>
+        <td></td>
+        <td></td>
+      </tr>
+      {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane fade" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab">
+    <table class="table table-hover">
+      <thead>
+        <tr class="bg-light">
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">Email</th>
+          <th scope="col">Date Posted</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if all_posts %}
+        {% for post in all_posts %}
+        <tr>
+          <th scope="row">{{post.title}}</th>
+          <td>{{post.author.username}}</td>
+          <td>{{post.author.email}}</td>
+          <td>{{post.date_posted.strftime('%m-%d-%Y')}}</td>
+          <td><a href="{{url_for('posts.post', post_id=post.id)}}" class=""><button class="btn btn-outline-info">View Post</button></a></td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <th scope="row">There are no posts!</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane fade" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
+    <table class="table table-hover">
+      <thead>
+        <tr class="bg-light">
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if all_users %}
+        {% for user in all_users %}
+        <tr>
+          <th scope="row">{{user.username}}</th>
+          <td>{{user.email}}</td>
+          <td>{{user.role}}</td>
+          <td>{{user.status}}</td>
+          <td><a href="{{url_for('admin.authorize_user', user_id=user.id)}}" class=""><button class="btn btn-outline-info">Edit User</button></a></td>
+        </tr>
+        {% endfor %}
+      {% else %}
+      <tr>
+        <th scope="row"></th>
+        <td></td>
+        <td>There are no users yet!</td>
+        <td></td>
+        <td></td>
+      </tr>
+      {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+{% endblock %}

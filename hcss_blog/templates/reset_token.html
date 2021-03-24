@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>HCSS Blog - Register</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename = 'floating-labels.css') }}" rel="stylesheet">
+  </head>
+  <body>
+      <form class="form-signin", method="POST">
+        {{form.hidden_tag()}}
+        <br>
+      <div class="text-center mb-4">
+        <a href="{{url_for('main.index')}}">
+        <img class="mb-4" src="{{url_for('static', filename='images/hcss_logo.png')}}" width="72" height="72">
+        </a>
+      </div>
+
+
+      <div class="form-label-group">
+        {% if form.password.errors %}
+          {{ form.password(class="form-control is-invalid")}}
+          <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.password(class="form-control", placeholder="Password")}}
+        {% endif %}
+        {{ form.password.label(class="form-control-label")}}
+      </div>
+
+      <div class="form-label-group">
+        {% if form.confirm_password.errors %}
+          {{ form.confirm_password(class="form-control is-invalid")}}
+          <div class="invalid-feedback">
+            {% for error in form.confirm_password.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.confirm_password(class="form-control", placeholder="Confirm Password")}}
+        {% endif %}
+        {{ form.confirm_password.label(class="form-control-label")}}
+      </div>
+      {{ form.submit(class="btn btn-lg btn-primary btn-block")}}
+      <br>
+    </form>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>HCSS Blog Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename = 'floating-labels.css') }}" rel="stylesheet">
+  </head>
+  <body>
+
+      <form class="form-signin", method="POST">
+
+        {{form.hidden_tag()}}
+        <br><br>
+      <div class="text-center mb-4">
+        <a href="{{url_for('main.index')}}">
+        <img class="mb-4" src="{{url_for('static', filename='images/hcss_logo.png')}}" width="72" height="72">
+        </a>
+        <!-- <h1 class="h1 mb-3 font-weight-normal">HCSS Blog</h1> -->
+      </div>
+      <div class="form-label-group">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show">
+                <small>{{message}}</small>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+      <div class="form-label-group">
+        {% if form.email.errors %}
+            {{ form.email(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.email.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.email(class="form-control", placeholder="Email address") }}
+        {% endif %}
+        {{ form.email.label(class="form-control-label") }}
+      </div>
+
+      <div class="form-label-group">
+        {% if form.password.errors %}
+          {{ form.password(class="form-control is-invalid")}}
+          <div class="invalid-feedback">
+            {% for error in form.password.errors %}
+              <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% else %}
+          {{ form.password(class="form-control", placeholder="Password")}}
+        {% endif %}
+        {{ form.password.label(class="form-control-label")}}
+
+        <div class="text-right">
+          <small><a href="{{url_for('users.reset_request')}}">Forgot Password?</a></small>
+        </div>
+      </div>
+      <div class="form-check mb-3">
+          {{ form.remember(class="form-check-input") }}
+          {{ form.remember.label(class="form-check-label") }}
+      </div>
+
+      {{ form.submit(class="btn btn-lg btn-primary btn-block")}}
+      <br>
+      <div class="form-group text-center">
+          <small class="text-muted">
+              Need An Account? <a class="ml-2" href="{{ url_for('users.register') }}">Sign Up Now</a>
+          </small>
+      </div>
+      <br>
+    </form>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="card col-lg-12">
+<div class="card-body">
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    <h5><strong>{{form.username.label()}}</strong></h5>
+    {{form.username(class="form-control", readonly=true)}}
+  </div>
+  <div class="form-group">
+    <h5><strong>{{form.email.label()}}</strong></h5>
+    {{form.email(class="form-control", readonly=true)}}
+  </div>
+  <div class="form-group">
+    <h5><strong>{{form.account_role.label}}</strong></h5>
+    {{form.account_role(class="form-control")}}
+  </div>
+  <div class="form-group">
+    <h5><strong>{{form.status.label}}</strong></h5>
+    {{form.status(class="form-control")}}
+  </div>
+    {{form.submit(class="btn btn-outline-primary")}}
+</form>
+</div>
+</div>
+
+{% endblock %}

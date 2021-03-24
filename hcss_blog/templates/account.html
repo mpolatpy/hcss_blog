@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+  {% if form2.confirm_password.errors or form.username.errors or form.email.errors %}
+    <div class="alert alert-danger" role="alert">
+      Error! Please check the form again.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %}
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-acoount-tab" data-toggle="tab" href="#nav-acoount" role="tab" aria-controls="nav-acoount" aria-selected="true">Account Info</a>
+    <a class="nav-item nav-link" id="nav-updateprofile-tab" data-toggle="tab" href="#nav-updateprofile" role="tab" aria-controls="nav-updateprofile" aria-selected="false">Update Account</a>
+    <a class="nav-item nav-link" id="nav-changepassword-tab" data-toggle="tab" href="#nav-changepassword" role="tab" aria-controls="nav-changepassword" aria-selected="false">Change Password</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-acoount" role="tabpanel" aria-labelledby="nav-acoount-tab">
+    <!-- <div class="card border-light col-lg-12"> -->
+    <!-- <div class="card-body"> -->
+    <div class="jumbotron">
+      <div class="text-center">
+          <img class="rounded-circle account-img" src="{{ image_file }}">
+      </div>
+            <h4 class="account-heading">Username: {{ current_user.username }}</h4>
+            <h4 class="text-secondary">Email: {{ current_user.email }}</h4>
+            <h4 class="text-secondary"><a href="{{url_for('users.user_posts', username=current_user.username)}}">Posts ({{ post_num }})</a> </h4>
+      </div>
+    </div>
+    <!-- </div> -->
+    <!-- </div> -->
+  <div class="tab-pane fade" id="nav-updateprofile" role="tabpanel" aria-labelledby="nav-updateprofile-tab">
+    <div class="row welcome text-center">
+      <div class="col-12">
+        <h5>Please use the form below to update your account.</h5>
+      </div>
+    </div>
+    <div class="card border-light">
+    <div class="card-body">
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      <div class="form-group">
+        <h5><strong>{{form.username.label()}}</strong></h5>
+        {% if form.username.errors %}
+            {{ form.username(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.username.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.username(class="form-control") }}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        <h5><strong>{{form.email.label()}}</strong></h5>
+          {% if form.email.errors %}
+              {{ form.email(class="form-control is-invalid") }}
+              <div class="invalid-feedback">
+                  {% for error in form.email.errors %}
+                      <span>{{ error }}</span>
+                  {% endfor %}
+              </div>
+          {% else %}
+              {{ form.email(class="form-control") }}
+          {% endif %}
+      </div>
+      <div class="form-group">
+        <h5><strong>Account Type</strong></h5>
+        <input class="form-control" type="text" placeholder="{{current_user.role}}" readonly>
+      </div>
+      <div class="form-group">
+        <h5><strong>{{form.picture.label}}</strong></h5>
+        {{form.picture(class="form-control-file")}}
+        {% if form.picture.errors %}
+        <div class="alert alert-danger" role="alert">
+          Error! Please check account update page.
+        </div>
+          {% for error in form.picture.errors %}
+            <span class="text-danger"> {{ error }} </span> <br>
+          {% endfor %}
+        {% endif %}
+      </div>
+      {{form.submit(class="btn btn-outline-info")}}
+    </form>
+    </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="nav-changepassword" role="tabpanel" aria-labelledby="nav-changepassword-tab">
+    <div class="row welcome text-center">
+      <div class="col-12">
+        <h5>Please use the form below to change your password.</h5>
+      </div>
+    </div>
+    <div class="card border-light">
+    <div class="card-body">
+    <form class="form-signin", method="POST">
+      {{form2.hidden_tag()}}
+    <div class="form-group">
+      <h5><strong>{{form2.password.label}}</strong></h5>
+      {% if form2.password.errors %}
+        {{ form2.password(class="form-control is-invalid")}}
+        <div class="invalid-feedback">
+          {% for error in form2.password.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form2.password(class="form-control", placeholder="Password")}}
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <h5><strong>{{form2.confirm_password.label}}</strong></h5>
+      {% if form2.confirm_password.errors %}
+        {{ form2.confirm_password(class="form-control is-invalid")}}
+        <div class="invalid-feedback">
+          {% for error in form2.confirm_password.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form2.confirm_password(class="form-control", placeholder="Confirm Password")}}
+      {% endif %}
+    </div>
+    {{ form2.submit(class="btn btn-outline-info ")}}
+    <br>
+  </form>
+  </div>
+  </div>
+  </div>
+</div>
+</div>
+{% endblock %}

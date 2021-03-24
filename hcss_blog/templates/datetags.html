@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% if posts.items %}
+<div class="col-12 text-center">
+  <h2><strong>{{date_tag}} Posts</strong></h2>
+  <hr>
+</div>
+  {% for post in posts.items %}
+    <div class="col-md-6">
+      <div class="card border-light">
+        <div class="card-body">
+          <div class="">
+            <a href="{{url_for('users.user_posts', username=post.author.username)}}">
+              <img class="rounded-circle user-img" src="{{url_for('static', filename='profile_pics/'+ post.author.image_file)}}">
+            </a>
+            <h4 class="card-title"><strong>{{post.title}}</strong></h4>
+            <div class="padding">
+              by <a class="muted" href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a> on {{post.date_posted.strftime('%b %d, %Y')}}
+            </div>
+          </div>
+          {% if (post.post_photo != '' and post.post_photo != 'no_picture.jpg') %}
+          <a href="{{url_for('posts.post', post_id=post.id)}}">
+            <img class="card-img-top" src="{{url_for('static', filename='images/'+ post.post_photo)}}">
+          </a>
+          <br><br>
+          {% endif %}
+          <p class="card-text">{{post.content | striptags | truncate(200)}}</p>
+          <a href="{{url_for('posts.post', post_id=post.id)}}" class=""><button class="btn btn-outline-secondary">Continue Reading</button></a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="container">
+    <h2>No posts found for {{date_tag}}</h2>
+  </div
+{% endif %}
+
+<div class="col-12">
+<nav aria-label="...">
+  <ul class="pagination">
+  {%  for page_num in posts.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+    {% if page_num %}
+      {% if posts.page == page_num %}
+        <li class="page-item active">
+          <span class="page-link">
+            {{page_num}}
+            <span class="sr-only">(current)</span>
+          </span>
+        </li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('posts.by_date_tag', date_tag=date_tag, page=page_num) }}">{{page_num}}</a></li>
+      {% endif %}
+    {% else %}
+        ...
+    {% endif %}
+  {% endfor %}
+  </ul>
+</nav>
+</div>
+
+{% endblock %}
