@@ -27,12 +27,17 @@ login_manager.login_message_category = 'info'
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
-app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
+app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER2')
+app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS2')
 mail = Mail(app)
 
 app.config['CKEDITOR_PKG_TYPE'] = 'standard'
 ckeditor = CKEditor(app)
+
+S3_BUCKET = os.environ.get("S3_BUCKET_NAME")
+S3_KEY = os.environ.get("S3_ACCESS_KEY")
+S3_SECRET = os.environ.get("S3_SECRET_ACCESS_KEY")
+S3_LOCATION = "https://{}.s3.amazonaws.com/".format(S3_BUCKET)
 
 from hcss_blog.users.routes import users
 from hcss_blog.posts.routes import posts

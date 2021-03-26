@@ -132,7 +132,7 @@
 						{% for latest_post in latest_posts %}
 							<h6><strong>{{latest_post.title}}</strong></h6>
 							<a href="{{url_for('posts.post', post_id=latest_post.id)}}" class="d-inline-block mt-3">
-								<img class="card-img" src="{{url_for('static', filename='images/'+latest_post.post_photo)}}"/>
+								<img class="card-img" src="{{ latest_post.post_photo if 'aws' in latest_post.post_photo else url_for('static', filename='images/'+latest_post.post_photo)}}"/>
 							</a>
 							<br><br>
 						{% endfor %}

@@ -3,27 +3,32 @@ import secrets
 from PIL import Image
 from flask import url_for, current_app
 from flask_mail import Message
-from hcss_blog import mail
+from hcss_blog import mail, S3_KEY, S3_SECRET, S3_BUCKET
+from hcss_blog.models import User
+import boto3
+from botocore.exceptions import ClientError
+from werkzeug.utils import secure_filename
 
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    _, file_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + file_ext
-    picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
+sender = os.environ.get('EMAIL_USER2')
 
-    # resize image before saving
-    output_size = (125, 125)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
-
-    return picture_fn
-
+# def save_picture(form_picture):
+#     random_hex = secrets.token_hex(8)
+#     _, file_ext = os.path.splitext(form_picture.filename)
+#     picture_fn = random_hex + file_ext
+#     picture_path = os.path.join(current_app.root_path, 'static/profile_pics', picture_fn)
+#
+#     # resize image before saving
+#     output_size = (125, 125)
+#     i = Image.open(form_picture)
+#     i.thumbnail(output_size)
+#     i.save(picture_path)
+#
+#     return picture_fn
 
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request',
-                  sender='mpolatpy@gmail.com',
+                  sender=sender,
                   recipients=[user.email])
     msg.html = f'''Hi {user.username.title()},
 <br><br>
@@ -38,9 +43,10 @@ HCSS Blog Team
     mail.send(msg)
 
 def notify_registration(user):
+    recipients = [user.email for user in User.query.filter(User.role=='admin').all()]
     msg = Message('New User Registration',
-                  sender='mpolatpy@gmail.com',
-                  recipients=['mpolat@hampdencharter.org'])
+                  sender=sender,
+                  recipients=recipients)
     msg.html = f'''Hi HCSS Blog Admin Team,
 <br><br>
 This is an automated email notification from HCSS Blog.<br>

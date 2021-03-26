@@ -4,7 +4,8 @@ from hcss_blog import db, bcrypt
 from hcss_blog.models import User, Post
 from hcss_blog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
-from hcss_blog.users.utils import save_picture, send_reset_email, notify_registration
+from hcss_blog.users.utils import send_reset_email, notify_registration
+from hcss_blog.utils import save_picture
 import os
 
 users = Blueprint('users', __name__)
@@ -61,8 +62,8 @@ def account():
             old_pic = current_user.image_file
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
-            if old_pic != 'default-avatar.png':
-                os.remove(os.path.join(current_app.root_path, 'static/profile_pics', old_pic))
+            # if old_pic != 'default-avatar.png':
+            #     os.remove(os.path.join(current_app.root_path, 'static/profile_pics', old_pic))
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()
@@ -77,7 +78,12 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename= 'profile_pics/'+ current_user.image_file)
+
+    if current_user.image_file == 'default-avatar.png':
+        image_file = url_for('static', filename= 'profile_pics/'+ current_user.image_file)
+    else:
+        image_file = current_user.image_file
+
     post_num = len(Post.query.filter_by(user_id=current_user.id).all())
     return render_template('account.html', title='Account', image_file=image_file, form=form, post_num=post_num, form2=form2)
 

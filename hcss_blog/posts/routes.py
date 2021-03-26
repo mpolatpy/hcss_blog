@@ -4,7 +4,8 @@ from flask_login import current_user, login_required
 from hcss_blog import db
 from hcss_blog.models import Post, User
 from hcss_blog.posts.forms import PostForm
-from hcss_blog.posts.utils import save_picture, month_range, send_new_post_email
+from hcss_blog.posts.utils import month_range, send_new_post_email
+from hcss_blog.utils import save_picture
 import os
 
 posts = Blueprint('posts', __name__)
@@ -101,11 +102,11 @@ def update_post(post_id):
             old_pic = post.post_photo
             photo = save_picture(form.post_photo.data)
             post.post_photo = photo
-            if old_pic != 'no_picture.jpg':
-                try:
-                    os.remove(os.path.join(current_app.root_path, 'static/images', old_pic))
-                except:
-                    flash('Associated picture not found!', 'warning')
+            # if old_pic != 'no_picture.jpg':
+            #     try:
+            #         os.remove(os.path.join(current_app.root_path, 'static/images', old_pic))
+            #     except:
+            #         flash('Associated picture not found!', 'warning')
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('posts.post', post_id=post.id))

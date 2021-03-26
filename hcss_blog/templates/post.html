@@ -6,7 +6,7 @@
         <div class="card-body">
           <div class="">
             <a href="{{url_for('users.user_posts', username=post.author.username)}}">
-              <img class="rounded-circle user-img" src="{{url_for('static', filename='profile_pics/'+ post.author.image_file)}}">
+              <img class="rounded-circle user-img" src="{{post.author.image_file if 'aws' in post.author.image_file else url_for('static', filename='profile_pics/default-avatar.png')}}">
             </a>
             <h4 class="card-title"><strong>{{post.title}}</strong></h4>
             <div class="padding">
@@ -14,16 +14,16 @@
             </div>
           </div>
           {% if (post.post_photo != '' and post.post_photo != 'no_picture.jpg') %}
-          <img class="content-image" src="{{url_for('static', filename='images/'+ post.post_photo)}}">
+          <img class="content-image"  src="{{post.post_photo if 'aws' in post.post_photo else url_for('static', filename='images/'+ post.post_photo)}}">
           <br><br>
           {% endif %}
           <p class="article-content">{{ post.content | safe }}</p>
-          {% if post.author == current_user %}
+          <!-- {% if post.author == current_user %}
               <div class="">
                 <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id)}}">Update</a>
                 <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-              </div>
-          {% elif current_user.role == 'admin' and post.status == 'pending' %}
+              </div> -->
+          {% if current_user.role == 'admin' and post.status == 'pending' %}
             <div class="">
             <form method="POST">
               <input type="submit" class="btn btn-secondary btn-sm mt-1 mb-1" name="submit_button" value="Approve">

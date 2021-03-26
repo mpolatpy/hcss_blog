@@ -20,7 +20,7 @@
     <div class="card-body">
       <div class="">
         <a href="{{url_for('users.user_posts', username=post.author.username)}}">
-          <img class="rounded-circle user-img" src="{{url_for('static', filename='profile_pics/'+ user.image_file)}}">
+          <img class="rounded-circle user-img" src="{{ user.image_file if 'aws' in user.image_file else url_for('static', filename='profile_pics/default-avatar.png') }}">
         </a>
         <h4 class="card-title"><strong>{{post.title}}</strong></h4>
         <div class="padding">
@@ -29,7 +29,7 @@
       </div>
       {% if (post.post_photo != '' and post.post_photo != 'no_picture.jpg') %}
       <a href="{{url_for('posts.post', post_id=post.id)}}">
-        <img class="card-img-top" src="{{url_for('static', filename='images/'+ post.post_photo)}}">
+        <img class="card-img-top" src="{{post.post_photo if 'aws' in post.post_photo else url_for('static', filename='images/'+ post.post_photo)}}">
       </a>
       <br><br>
       {% endif %}
