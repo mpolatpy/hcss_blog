@@ -1,2 +1,2 @@
-web:gunicorn run:hcss_blog
+web:gunicorn run:app
 heroku ps:scale web=1
