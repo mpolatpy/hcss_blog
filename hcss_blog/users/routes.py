@@ -46,6 +46,7 @@ def register():
                 role = 'admin',
                 status = 'approved'
                 )
+        print(user)
         db.session.add(user)
         db.session.commit()
         # notify_registration(user)
