@@ -80,11 +80,6 @@
     </table>
   </div>
   <div class="tab-pane fade" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab">
-    <div class="row mt-2 mb-2">
-      <div class="col-12">
-        <input type="search" class="form-control" id="search-post" placeholder="Search..." />
-      </div>
-    </div>
     <table class="table table-hover">
       <thead>
         <tr class="bg-light">
@@ -95,7 +90,7 @@
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody id="table-posts">
+      <tbody>
       {% if all_posts %}
         {% for post in all_posts %}
         <tr>
@@ -119,11 +114,6 @@
     </table>
   </div>
   <div class="tab-pane fade" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
-    <div class="row mt-2 mb-2">
-      <div class="col-12">
-        <input type="search" class="form-control" id="search-user" placeholder="Search..." />
-      </div>
-    </div>
     <table class="table table-hover">
       <thead>
         <tr class="bg-light">
@@ -134,7 +124,7 @@
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody id="users-table">
+      <tbody>
       {% if all_users %}
         {% for user in all_users %}
         <tr>
@@ -159,26 +149,4 @@
   </div>
 </div>
 </div>
-<script type="text/javascript">
-  const postsTableId = "table-posts";
-  const searchPost = document.getElementById("search-post");
-  const userTableId = "users-table";
-  const searchUsers = document.getElementById("search-user");
-  searchPost.addEventListener('keyup', filterTable(searchPost, postsTableId));
-  searchUsers.addEventListener('keyup', filterTable(searchUsers, userTableId));
-
-  function filterTable(searchItem, tableId) {
-    return function (e){
-      const filterValue = searchItem.value.toLowerCase();
-      console.log(filterValue)
-      var trs = document.querySelectorAll(`#${tableId} tr`);
-      (
-        trs.length > 1 ?
-        trs.forEach(
-          tr => tr.style.display = [...tr.children].find(td => td.innerHTML.toLowerCase().includes(filterValue)) ? '' : 'none'
-        ) : null
-      )
-    }
-  }
-</script>
 {% endblock %}

@@ -31,3 +31,21 @@ def save_picture(form_picture):
         return None
 
     return "https://{}.s3.amazonaws.com/{}".format(S3_BUCKET, picture_fn)
+
+
+def delete_picture(url):
+    key = url.split('.s3.amazonaws.com/')[1] if 'amazonaws' in url else None
+    if(key):
+        s3 = boto3.client(
+           "s3",
+           aws_access_key_id=S3_KEY,
+           aws_secret_access_key=S3_SECRET
+        )
+
+        try:
+            response = s3.delete_object(Bucket=S3_BUCKET, Key=key)
+            return True
+        except ClientError as e:
+            print(e)
+
+    return False

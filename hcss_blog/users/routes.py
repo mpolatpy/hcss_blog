@@ -5,7 +5,7 @@ from hcss_blog.models import User, Post
 from hcss_blog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
 from hcss_blog.users.utils import send_reset_email, notify_registration
-from hcss_blog.utils import save_picture
+from hcss_blog.utils import save_picture, delete_picture
 import os
 
 users = Blueprint('users', __name__)
@@ -37,10 +37,18 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        # user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        #initial user
+        user = User(
+                username=form.username.data,
+                email=form.email.data,
+                password=hashed_password,
+                role = 'admin',
+                status = 'approved'
+                )
         db.session.add(user)
         db.session.commit()
-        notify_registration(user)
+        # notify_registration(user)
         flash('Your account has been submitted for approval!', 'success')
         return redirect(url_for('main.index'))
     return render_template('register.html', title='Register', form=form)
@@ -62,8 +70,8 @@ def account():
             old_pic = current_user.image_file
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
-            # if old_pic != 'default-avatar.png':
-            #     os.remove(os.path.join(current_app.root_path, 'static/profile_pics', old_pic))
+            if 'amazonaws' in old_pic:
+                delete_picture(old_pic)
         current_user.username = form.username.data
         current_user.email = form.email.data
         db.session.commit()

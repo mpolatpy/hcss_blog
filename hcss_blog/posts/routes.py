@@ -5,7 +5,7 @@ from hcss_blog import db
 from hcss_blog.models import Post, User
 from hcss_blog.posts.forms import PostForm
 from hcss_blog.posts.utils import month_range, send_new_post_email
-from hcss_blog.utils import save_picture
+from hcss_blog.utils import save_picture, delete_picture
 import os
 
 posts = Blueprint('posts', __name__)
@@ -82,6 +82,12 @@ def post(post_id):
         elif request.form['submit_button'] == 'Delete':
             db.session.delete(post)
             db.session.commit()
+            old_pic = post.post_photo
+            if (old_pic != 'no_picture.jpg') and ('amazonaws' in old_pic):
+                try:
+                    delete_picture(old_pic)
+                except:
+                    flash('Associated picture not found!', 'warning')
             flash('Post is deleted from the blog successfully', 'success')
             return redirect(url_for('admin.admin_page'))
     elif request.method == 'GET':
@@ -102,11 +108,11 @@ def update_post(post_id):
             old_pic = post.post_photo
             photo = save_picture(form.post_photo.data)
             post.post_photo = photo
-            # if old_pic != 'no_picture.jpg':
-            #     try:
-            #         os.remove(os.path.join(current_app.root_path, 'static/images', old_pic))
-            #     except:
-            #         flash('Associated picture not found!', 'warning')
+            if (old_pic != 'no_picture.jpg') and ('amazonaws' in old_pic):
+                try:
+                    delete_picture(old_pic)
+                except:
+                    flash('Associated picture not found!', 'warning')
         db.session.commit()
         flash('Your post has been updated!', 'success')
         return redirect(url_for('posts.post', post_id=post.id))
@@ -125,6 +131,12 @@ def delete_post(post_id):
         abort(403)
     db.session.delete(post)
     db.session.commit()
+    old_pic = post.post_photo
+    if (old_pic != 'no_picture.jpg') and ('amazonaws' in old_pic):
+        try:
+            delete_picture(old_pic)
+        except:
+            flash('Associated picture not found!', 'warning')
     flash('Post is deleted from the blog successfully', 'success')
     return redirect(url_for('main.index'))
 
