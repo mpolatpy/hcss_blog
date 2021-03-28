@@ -1,1 +1,1 @@
-web: gunicorn hcss_blog:app
+web: gunicorn run.py
