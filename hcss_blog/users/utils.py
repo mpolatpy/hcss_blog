@@ -30,7 +30,7 @@ def send_reset_email(user):
     msg = Message('Password Reset Request',
                   sender=sender,
                   recipients=[user.email])
-    msg.html = f'''Hi {user.username.title()},
+    msg.html = f'''Hi {user.username},
 <br><br>
 You have requested to reset your password for HCSS Blog. If you did not make this request
 then simply ignore this email and no changes will be made.

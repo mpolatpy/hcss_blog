@@ -170,7 +170,6 @@
   function filterTable(searchItem, tableId) {
     return function (e){
       const filterValue = searchItem.value.toLowerCase();
-      console.log(filterValue)
       var trs = document.querySelectorAll(`#${tableId} tr`);
       (
         trs.length > 1 ?
