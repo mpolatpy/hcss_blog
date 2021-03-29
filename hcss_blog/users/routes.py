@@ -37,18 +37,18 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        # user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
         #initial user
-        user = User(
-                username=form.username.data,
-                email=form.email.data,
-                password=hashed_password,
-                role = 'admin',
-                status = 'approved'
-                )
+        # user = User(
+        #         username=form.username.data,
+        #         email=form.email.data,
+        #         password=hashed_password,
+        #         role = 'admin',
+        #         status = 'approved'
+        #         )
         db.session.add(user)
         db.session.commit()
-        # notify_registration(user)
+        notify_registration(user)
         flash('Your account has been submitted for approval!', 'success')
         return redirect(url_for('main.index'))
     return render_template('register.html', title='Register', form=form)
