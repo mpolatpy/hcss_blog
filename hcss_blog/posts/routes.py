@@ -10,6 +10,19 @@ import os
 
 posts = Blueprint('posts', __name__)
 
+@posts.before_request
+def before_request():
+    if request.is_secure:
+        return
+
+    url = request.url
+    if request.url.startswith('http://'):
+        url = request.url.replace('http', 'https', 1)
+    elif not 'https://' in url:
+        url = f"https://{request.url}"
+
+    return redirect(url, code=301)
+
 def tags():
     return get_all_tags()
 

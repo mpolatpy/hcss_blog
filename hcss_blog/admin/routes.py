@@ -7,6 +7,19 @@ from hcss_blog.admin.utils import send_user_authorization_email
 
 admin = Blueprint('admin', __name__)
 
+@admin.before_request
+def before_request():
+    if request.is_secure:
+        return
+
+    url = request.url
+    if request.url.startswith('http://'):
+        url = request.url.replace('http', 'https', 1)
+    elif not 'https://' in url:
+        url = f"https://{request.url}"
+
+    return redirect(url, code=301)
+
 @login_required
 @admin.route('/admin', methods=['GET', 'POST'])
 def admin_page():

@@ -10,6 +10,19 @@ import os
 
 users = Blueprint('users', __name__)
 
+@users.before_request
+def before_request():
+    if request.is_secure:
+        return
+
+    url = request.url
+    if request.url.startswith('http://'):
+        url = request.url.replace('http', 'https', 1)
+    elif not 'https://' in url:
+        url = f"https://{request.url}"
+
+    return redirect(url, code=301)
+
 @users.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
