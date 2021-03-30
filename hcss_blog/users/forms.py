@@ -27,6 +27,8 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('Email is not available. Please choose a different email.')
+        if not 'hampdencharter.org' in email.data:
+            raise ValidationError('You must use a Hampden Charter email account to register')
 
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',validators=[DataRequired(), Length(min=3, max=20)])
