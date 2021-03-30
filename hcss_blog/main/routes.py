@@ -6,7 +6,7 @@ main = Blueprint('main', __name__)
 
 @main.before_request
 def before_request():
-    if main.env == 'development' or request.is_secure:
+    if request.is_secure:
         return
 
     url = request.url
