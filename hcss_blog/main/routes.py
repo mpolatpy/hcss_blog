@@ -1,8 +1,21 @@
-from flask import render_template, request, Blueprint, flash
+from flask import render_template, request, Blueprint, flash, redirect
 from hcss_blog.models import Post
 from datetime import datetime, timedelta
 
 main = Blueprint('main', __name__)
+
+@main.before_request
+def before_request():
+    if main.env == 'development' or request.is_secure:
+        return
+
+    url = request.url
+    if request.url.startswith('http://'):
+        url = request.url.replace('http', 'https', 1)
+    elif not 'https://' in url:
+        url = f"https://{request.url}"
+
+    return redirect(url, code=301)
 
 @main.route('/')
 @main.route('/home')
