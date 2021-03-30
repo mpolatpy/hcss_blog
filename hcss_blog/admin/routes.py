@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, abort, flash
+from flask import Blueprint, render_template, redirect, url_for, abort, flash, request
 from hcss_blog.models import User, Post
 from hcss_blog import db
 from hcss_blog.admin.forms import AuthorizeUserForm
