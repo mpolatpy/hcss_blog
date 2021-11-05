@@ -92,6 +92,7 @@
           <th scope="col">Author</th>
           <th scope="col">Email</th>
           <th scope="col">Date Posted</th>
+          <th scope="col">Status</th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -103,6 +104,7 @@
           <td>{{post.author.username}}</td>
           <td>{{post.author.email}}</td>
           <td>{{post.date_posted.strftime('%m-%d-%Y')}}</td>
+          <td>{{post.status}}</td>
           <td><a href="{{url_for('posts.post', post_id=post.id)}}" class=""><button class="btn btn-outline-info">View Post</button></a></td>
         </tr>
         {% endfor %}

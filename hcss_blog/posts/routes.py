@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from hcss_blog import db
 from hcss_blog.models import Post, User
 from hcss_blog.posts.forms import PostForm
-from hcss_blog.posts.utils import month_range, send_new_post_email
+from hcss_blog.posts.utils import month_range, send_new_post_email, send_new_post_notification
 from hcss_blog.utils import save_picture, delete_picture
 import os
 
@@ -85,6 +85,7 @@ def post(post_id):
         if request.form['submit_button'] == 'Approve':
             post.status = 'approved'
             db.session.commit()
+            send_new_post_notification(post)
             flash('Post is available for public view now!', 'success')
             return redirect(url_for('admin.admin_page'))
         elif request.form['submit_button'] == 'Reject':

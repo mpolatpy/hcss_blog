@@ -94,7 +94,7 @@
 	            </a>
 	            <h4 class="card-title"><strong>{{post.title}}</strong></h4>
 	            <div class="padding">
-	              {{ post.date_posted | time_passed }} by <a class="muted" href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a>
+	              {{post.date_posted.strftime('%b %d, %Y')}} by <a class="muted" href="{{url_for('users.user_posts', username=post.author.username)}}">{{post.author.username}}</a>
 	            </div>
 	          </div>
 	          {% if (post.post_photo != '' and post.post_photo != 'no_picture.jpg') %}

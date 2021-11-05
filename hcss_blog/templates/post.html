@@ -27,7 +27,7 @@
               <!-- <a class="btn btn-outline-success" href="#">Approve</a>
               <a class="btn btn-outline-danger" href="#">Reject</a> -->
             </div>
-          {% elif current_user.role == 'admin' and post.status == 'approved' %}
+          {% elif current_user.role == 'admin' %}
           <div class="">
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('posts.update_post', post_id=post.id)}}">Update</a>
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>

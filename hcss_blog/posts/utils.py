@@ -49,3 +49,25 @@ Please note that the post will only be available for public view after a site ad
 Thank you
 '''
     mail.send(msg)
+
+def send_new_post_notification(post):
+    sender = os.environ.get('EMAIL_USER2')
+    recipients = ['staff@hampdencharter.org']
+    msg = Message('HCSS Blog - New Post Notification',
+                  sender=sender,
+                  recipients=recipients)
+    msg.body = f'''
+This is an automated email notification from HCSS Blog for a new post.
+
+- Author: {post.author.username}
+- Title : {post.title}
+- Date: {post.date_posted.strftime('%b %d, %Y')}
+
+Please visit HCSS Blog for details.
+https://blog.hampdencharter.org
+
+Thank you
+
+HCSS Blog Team
+'''
+    mail.send(msg)
